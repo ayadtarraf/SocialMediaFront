@@ -28,7 +28,7 @@ const PostWidget = ({
   onDeletePost,
 }) => {
   const [isComments, setIsComments] = useState(false);
-  const [Comment, setComment] = useState("");
+  // const [Comment, setComment] = useState("");
   const dispatch = useDispatch();
   const token = useSelector((state) => state.token);
   const loggedInUserId = useSelector((state) => state.user._id);
@@ -77,22 +77,22 @@ const PostWidget = ({
     }
   };
 
-  const postComment = async () => {
-    const response = await fetch(`http://localhost:3001/posts/${postId}/commentPost`,
-    {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ value: Comment}),
+//   const postComment = async () => {
+//     const response = await fetch(`http://localhost:3001/posts/${postId}/commentPost`,
+//     {
+//       method: "POST",
+//       headers: {
+//         Authorization: `Bearer ${token}`,
+//         "Content-Type": "application/json",
+//       },
+//       body: JSON.stringify({ value: Comment}),
 
-    });
-  }
-  const updatedPost = await response.json();
-  dispatch(setPost({ post: updatedPost }));
-  setComment("")
-}:
+//     });
+//   }
+//   const updatedPost = await response.json();
+//   dispatch(setPost({ post: updatedPost }));
+//   setComment("")
+// }:
   return (
     <WidgetWrapper m="2rem 0">
       <Friend
@@ -129,7 +129,7 @@ const PostWidget = ({
           <IconButton onClick={() => setIsComments(!isComments)}>
             <ChatBubbleOutlineOutlined />
           </IconButton>
-          <Typography>{comments && comments.length}</Typography>
+          {/* <Typography>{comments && comments.length}</Typography>
           <Input
           value={Comment}
           onChange={(e) => setComment(e.target.value)}
@@ -147,7 +147,7 @@ const PostWidget = ({
             </Send>
           ) :(
             ""
-          )}
+          )} */}
         </FlexBetween>
 
         {loggedInUserId === postUserId && (
@@ -160,7 +160,7 @@ const PostWidget = ({
           <ShareOutlined />
         </IconButton>
       </FlexBetween>
-      {isComments && (
+      {/* {isComments && (
         <Box mt="0.5rem">
           {comments.map((comment, i) => (
             <Box key={`${name}-${i}`}>
@@ -172,7 +172,7 @@ const PostWidget = ({
           ))}
           <Divider />
         </Box>
-      )}
+      )} */}
     </WidgetWrapper>
   );
 };
