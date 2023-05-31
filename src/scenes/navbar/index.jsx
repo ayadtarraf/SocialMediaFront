@@ -9,13 +9,8 @@ import {
   useTheme,
   useMediaQuery,
 } from "@mui/material";
-import {
-  Search,
-  DarkMode,
-  LightMode,
-  Menu,
-  Close,
-} from "@mui/icons-material";
+import logo from "../loginPage/logo.svg";
+import { Search, DarkMode, LightMode, Menu, Close } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import { setMode, setLogout } from "state";
 import { useNavigate } from "react-router-dom";
@@ -50,14 +45,20 @@ const Navbar = () => {
   const handleCoachclick = () => {
     navigate("/home?query=coach");
   };
-const handlePlayerClick = () => {
-navigate("/home?query=player");
-};
+  const handlePlayerClick = () => {
+    navigate("/home?query=player");
+  };
   return (
     <FlexBetween
       padding="1rem 6%"
       backgroundColor={alt}
-      style={{ position: "sticky", width: "100%", top: "0", zIndex: "999" }}
+      style={{
+        position: "sticky",
+        width: "100%",
+        top: "0",
+        zIndex: "999",
+        paddingBottom: "0px",
+      }}
     >
       <FlexBetween gap="1.75rem">
         <Typography
@@ -72,7 +73,17 @@ navigate("/home?query=player");
             },
           }}
         >
-          ayad
+          <div style={{ width: "100%", height: "100%" }}>
+            <img
+              src={logo}
+              style={{
+                width: "109px",
+                height: "61px",
+                objectFit: "cover",
+                marginLeft: isNonMobileScreens ? "-58px" : "-34px",
+              }}
+            />
+          </div>
         </Typography>
 
         {isNonMobileScreens && (
@@ -215,17 +226,17 @@ navigate("/home?query=player");
               )}
             </IconButton>
             <IconButton onClick={handlePlayerClick}>
-            <Typography
-              variant="body1"
-              color={theme.palette.mode === "dark" ? "primary" : "primary"}
-              sx={{
-                fontWeight: "bold",
-                fontSize: "16px",
-              }}
-            >
-              Player
-            </Typography>
-          </IconButton>
+              <Typography
+                variant="body1"
+                color={theme.palette.mode === "dark" ? "primary" : "primary"}
+                sx={{
+                  fontWeight: "bold",
+                  fontSize: "16px",
+                }}
+              >
+                Player
+              </Typography>
+            </IconButton>
             <IconButton onClick={handleCoachclick}>
               <Typography
                 variant="body1"
@@ -239,17 +250,17 @@ navigate("/home?query=player");
               </Typography>
             </IconButton>
             <IconButton onClick={handleHelpClick}>
-            <Typography
-              variant="body1"
-              color={theme.palette.mode === "dark" ? "primary" : "primary"}
-              sx={{
-                fontWeight: "bold",
-                fontSize: "16px",
-              }}
-            >
-              Gym
-            </Typography>
-          </IconButton>
+              <Typography
+                variant="body1"
+                color={theme.palette.mode === "dark" ? "primary" : "primary"}
+                sx={{
+                  fontWeight: "bold",
+                  fontSize: "16px",
+                }}
+              >
+                Gym
+              </Typography>
+            </IconButton>
             <FormControl variant="standard" value={fullName}>
               <Select
                 value={fullName}

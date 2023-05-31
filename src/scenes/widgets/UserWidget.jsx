@@ -32,7 +32,7 @@ const UserWidget = ({ userId, picturePath }) => {
 
   const getUser = async () => {
     try {
-      const response = await fetch(`http://localhost:3001/users/${userId}`, {
+      const response = await fetch(`${process.env.REACT_APP_ENV}/users/${userId}`, {
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -59,7 +59,7 @@ const UserWidget = ({ userId, picturePath }) => {
         return;
       }
   
-      const response = await fetch(`http://localhost:3001/users/${userId}`, {
+      const response = await fetch(`${process.env.REACT_APP_ENV}/users/${userId}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json", // Set the Content-Type header

@@ -16,7 +16,7 @@ const PostsWidget = ({ userId, isProfile = false }) => {
 
   const getPosts = async () => {
     const response = await fetch(
-      `http://localhost:3001/posts${isProfile?`/user?id=${userId}`:"?"}${searchQuery?"search="+searchQuery:""}`,
+      `${process.env.REACT_APP_ENV}/posts${isProfile?`/user?id=${userId}`:"?"}${searchQuery?"search="+searchQuery:""}`,
       {
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },
@@ -27,7 +27,7 @@ const PostsWidget = ({ userId, isProfile = false }) => {
   };
 
   const getUserPosts = async () => {
-    const response = await fetch(`http://localhost:3001/posts`, {
+    const response = await fetch(`${process.env.REACT_APP_ENV}/posts`, {
       method: "GET",
       headers: { Authorization: `Bearer ${token}` },
     });

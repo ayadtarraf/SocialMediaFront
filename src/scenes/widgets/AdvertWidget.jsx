@@ -16,7 +16,7 @@ const AdvertWidget = () => {
 
   useEffect(() => {
     
-    fetch("http://localhost:3001/posts/most-liked", {
+    fetch(`${process.env.REACT_APP_ENV}/posts/most-liked`, {
   method: "GET",headers: {
     Authorization: `Bearer ${token}`,
   },
@@ -44,7 +44,7 @@ const AdvertWidget = () => {
             width="100%"
             height="auto"
             alt=""
-            src={`http://localhost:3001/assets/${mostLikedPost.picturePath}`}
+            src={`${process.env.REACT_APP_ENV}/assets/${mostLikedPost.picturePath}`}
             style={{ borderRadius: "0.75rem", margin: "0.75rem 0" }}
           />
           <FlexBetween>
