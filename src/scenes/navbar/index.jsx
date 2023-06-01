@@ -87,7 +87,7 @@ const Navbar = () => {
         </Typography>
 
         {!isNonMobileScreens && !isSearchBarVisible && (
-          <IconButton onClick={() => setIsSearchBarVisible(true)}>
+          <IconButton  onClick={() => setIsSearchBarVisible(true)}>
             <Search />
           </IconButton>
         )}
@@ -114,21 +114,11 @@ const Navbar = () => {
       </FlexBetween>
   
       {!isNonMobileScreens ? (
-        <FlexBetween
-          display="flex"
-          gap="2rem"
+        <IconButton
+          onClick={() => setIsMobileMenuToggled(!isMobileMenuToggled)}
         >
-          <IconButton
-            onClick={() => setIsMobileMenuToggled(!isMobileMenuToggled)}
-          >
-            {isMobileMenuToggled ? <Close /> : <Menu />}
-          </IconButton>
-          <IconButton
-            onClick={() => setIsSearchBarVisible(true)}
-          >
-            <Search />
-          </IconButton>
-        </FlexBetween>
+          {isMobileMenuToggled ? <Close /> : <Menu />}
+        </IconButton>
       ) : (
         <FlexBetween gap="2rem">
           <IconButton onClick={() => dispatch(setMode())}>
@@ -250,7 +240,9 @@ const Navbar = () => {
             >
               <Typography
                 variant="body1"
-                color={theme.palette.mode === "dark" ? "primary" : "primary"}
+                color={
+                  theme.palette.mode === "dark" ? "primary" : "primary"
+                }
                 sx={{
                   fontWeight: "bold",
                   fontSize: "16px",
@@ -267,7 +259,9 @@ const Navbar = () => {
             >
               <Typography
                 variant="body1"
-                color={theme.palette.mode === "dark" ? "primary" : "primary"}
+                color={
+                  theme.palette.mode === "dark" ? "primary" : "primary"
+                }
                 sx={{
                   fontWeight: "bold",
                   fontSize: "16px",
@@ -284,7 +278,9 @@ const Navbar = () => {
             >
               <Typography
                 variant="body1"
-                color={theme.palette.mode === "dark" ? "primary" : "primary"}
+                color={
+                  theme.palette.mode === "dark" ? "primary" : "primary"
+                }
                 sx={{
                   fontWeight: "bold",
                   fontSize: "16px",
@@ -295,13 +291,34 @@ const Navbar = () => {
             </IconButton>
             <IconButton
               onClick={() => {
+                setIsMobileMenuToggled(false);
+                navigate("/profile");
+              }}
+            >
+              <Typography
+                variant="body1"
+                color={
+                  theme.palette.mode === "dark" ? "primary" : "primary"
+                }
+                sx={{
+                  fontWeight: "bold",
+                  fontSize: "16px",
+                }}
+              >
+                Profile
+              </Typography>
+            </IconButton>
+            <IconButton
+              onClick={() => {
                 dispatch(setLogout());
                 setIsMobileMenuToggled(false);
               }}
             >
               <Typography
                 variant="body1"
-                color={theme.palette.mode === "dark" ? "primary" : "primary"}
+                color={
+                  theme.palette.mode === "dark" ? "primary" : "primary"
+                }
                 sx={{
                   fontWeight: "bold",
                   fontSize: "16px",
@@ -312,6 +329,32 @@ const Navbar = () => {
             </IconButton>
           </FlexBetween>
         </Box>
+      )}
+
+      {isSearchBarVisible && (
+        <form onSubmit={handleSearchSubmit}>
+          <FlexBetween
+            backgroundColor={neutralLight}
+            borderRadius="9px"
+            gap="0.75rem"
+            padding="0.1rem 0.5rem"
+          >
+            <IconButton
+              onClick={() => setIsSearchBarVisible(false)}
+              sx={{ p: "0.5rem"}}
+            >
+              <Close />
+            </IconButton>
+            <InputBase
+              placeholder=" gym,coach,player..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            <IconButton type="submit" sx={{ p: "0.5rem" }}>
+              <Search />
+            </IconButton>
+          </FlexBetween>
+        </form>
       )}
     </FlexBetween>
   );
