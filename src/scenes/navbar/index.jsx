@@ -16,15 +16,14 @@ import { setMode, setLogout } from "state";
 import { useNavigate } from "react-router-dom";
 import FlexBetween from "components/FlexBetween";
 import { useState } from "react";
-// import { setPost } from "state";
 
 const Navbar = () => {
   const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false);
+  const [isSearchBarVisible, setIsSearchBarVisible] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
   const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
-  // const token = useSelector((state) => state.token);
   const theme = useTheme();
   const neutralLight = theme.palette.neutral.light;
   const dark = theme.palette.neutral.dark;
@@ -48,6 +47,7 @@ const Navbar = () => {
   const handlePlayerClick = () => {
     navigate("/home?query=player");
   };
+
   return (
     <FlexBetween
       padding="1rem 6%"
@@ -86,6 +86,12 @@ const Navbar = () => {
           </div>
         </Typography>
 
+        {!isNonMobileScreens && !isSearchBarVisible && (
+          <IconButton sx={{marginLeft: "397px"}} onClick={() => setIsSearchBarVisible(true)}>
+            <Search />
+          </IconButton>
+        )}
+
         {isNonMobileScreens && (
           <FlexBetween
             backgroundColor={neutralLight}
@@ -106,9 +112,14 @@ const Navbar = () => {
           </FlexBetween>
         )}
       </FlexBetween>
-
-      {/* DESKTOP NAV */}
-      {isNonMobileScreens ? (
+  
+      {!isNonMobileScreens ? (
+        <IconButton
+          onClick={() => setIsMobileMenuToggled(!isMobileMenuToggled)}
+        >
+          {isMobileMenuToggled ? <Close /> : <Menu />}
+        </IconButton>
+      ) : (
         <FlexBetween gap="2rem">
           <IconButton onClick={() => dispatch(setMode())}>
             {theme.palette.mode === "dark" ? (
@@ -178,15 +189,8 @@ const Navbar = () => {
             </Select>
           </FormControl>
         </FlexBetween>
-      ) : (
-        <IconButton
-          onClick={() => setIsMobileMenuToggled(!isMobileMenuToggled)}
-        >
-          <Menu />
-        </IconButton>
       )}
 
-      {/* MOBILE NAV */}
       {!isNonMobileScreens && isMobileMenuToggled && (
         <Box
           position="fixed"
@@ -216,7 +220,10 @@ const Navbar = () => {
             gap="3rem"
           >
             <IconButton
-              onClick={() => dispatch(setMode())}
+              onClick={() => {
+                dispatch(setMode());
+                setIsMobileMenuToggled(false);
+              }}
               sx={{ fontSize: "25px" }}
             >
               {theme.palette.mode === "dark" ? (
@@ -225,10 +232,17 @@ const Navbar = () => {
                 <LightMode sx={{ color: dark, fontSize: "25px" }} />
               )}
             </IconButton>
-            <IconButton onClick={handlePlayerClick}>
+            <IconButton
+              onClick={() => {
+                handlePlayerClick();
+                setIsMobileMenuToggled(false);
+              }}
+            >
               <Typography
                 variant="body1"
-                color={theme.palette.mode === "dark" ? "primary" : "primary"}
+                color={
+                  theme.palette.mode === "dark" ? "primary" : "primary"
+                }
                 sx={{
                   fontWeight: "bold",
                   fontSize: "16px",
@@ -237,10 +251,17 @@ const Navbar = () => {
                 Player
               </Typography>
             </IconButton>
-            <IconButton onClick={handleCoachclick}>
+            <IconButton
+              onClick={() => {
+                handleCoachclick();
+                setIsMobileMenuToggled(false);
+              }}
+            >
               <Typography
                 variant="body1"
-                color={theme.palette.mode === "dark" ? "primary" : "primary"}
+                color={
+                  theme.palette.mode === "dark" ? "primary" : "primary"
+                }
                 sx={{
                   fontWeight: "bold",
                   fontSize: "16px",
@@ -249,10 +270,17 @@ const Navbar = () => {
                 Coach
               </Typography>
             </IconButton>
-            <IconButton onClick={handleHelpClick}>
+            <IconButton
+              onClick={() => {
+                handleHelpClick();
+                setIsMobileMenuToggled(false);
+              }}
+            >
               <Typography
                 variant="body1"
-                color={theme.palette.mode === "dark" ? "primary" : "primary"}
+                color={
+                  theme.palette.mode === "dark" ? "primary" : "primary"
+                }
                 sx={{
                   fontWeight: "bold",
                   fontSize: "16px",
@@ -261,34 +289,72 @@ const Navbar = () => {
                 Gym
               </Typography>
             </IconButton>
-            <FormControl variant="standard" value={fullName}>
-              <Select
-                value={fullName}
+            <IconButton
+              onClick={() => {
+                setIsMobileMenuToggled(false);
+                navigate("/profile");
+              }}
+            >
+              <Typography
+                variant="body1"
+                color={
+                  theme.palette.mode === "dark" ? "primary" : "primary"
+                }
                 sx={{
-                  backgroundColor: neutralLight,
-                  width: "150px",
-                  borderRadius: "0.25rem",
-                  p: "0.25rem 1rem",
-                  "& .MuiSvgIcon-root": {
-                    pr: "0.25rem",
-                    width: "3rem",
-                  },
-                  "& .MuiSelect-select:focus": {
-                    backgroundColor: neutralLight,
-                  },
+                  fontWeight: "bold",
+                  fontSize: "16px",
                 }}
-                input={<InputBase />}
               >
-                <MenuItem value={fullName}>
-                  <Typography>{fullName}</Typography>
-                </MenuItem>
-                <MenuItem onClick={() => dispatch(setLogout())}>
-                  Log Out
-                </MenuItem>
-              </Select>
-            </FormControl>
+                Profile
+              </Typography>
+            </IconButton>
+            <IconButton
+              onClick={() => {
+                dispatch(setLogout());
+                setIsMobileMenuToggled(false);
+              }}
+            >
+              <Typography
+                variant="body1"
+                color={
+                  theme.palette.mode === "dark" ? "primary" : "primary"
+                }
+                sx={{
+                  fontWeight: "bold",
+                  fontSize: "16px",
+                }}
+              >
+                Log Out
+              </Typography>
+            </IconButton>
           </FlexBetween>
         </Box>
+      )}
+
+      {isSearchBarVisible && (
+        <form onSubmit={handleSearchSubmit}>
+          <FlexBetween
+            backgroundColor={neutralLight}
+            borderRadius="9px"
+            gap="0.75rem"
+            padding="0.1rem 0.5rem"
+          >
+            <IconButton
+              onClick={() => setIsSearchBarVisible(false)}
+              sx={{ p: "0.5rem"}}
+            >
+              <Close />
+            </IconButton>
+            <InputBase
+              placeholder=" gym,coach,player..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            <IconButton type="submit" sx={{ p: "0.5rem" }}>
+              <Search />
+            </IconButton>
+          </FlexBetween>
+        </form>
       )}
     </FlexBetween>
   );
