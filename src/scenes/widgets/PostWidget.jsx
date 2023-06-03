@@ -62,18 +62,21 @@ const PostWidget = ({
   };
 
   const handleDelete = async () => {
-    const response = await fetch(`${process.env.REACT_APP_ENV}/posts/${postId}`, {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    const data = await response.json();
-    // console.log("Deleted Post:", data);
-
-    // Call the onDeletePost function passed as prop
-    if (onDeletePost) {
-      onDeletePost(postId);
+    const shouldDelete = window.confirm("Are you sure you want to delete this post?");
+    if (shouldDelete) {
+      const response = await fetch(`${process.env.REACT_APP_ENV}/posts/${postId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = await response.json();
+      // console.log("Deleted Post:", data);
+  
+      // Call the onDeletePost function passed as prop
+      if (onDeletePost) {
+        onDeletePost(postId);
+      }
     }
   };
 

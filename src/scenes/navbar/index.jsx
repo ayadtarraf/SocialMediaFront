@@ -16,6 +16,7 @@ import { setMode, setLogout } from "state";
 import { useNavigate } from "react-router-dom";
 import FlexBetween from "components/FlexBetween";
 import { useState } from "react";
+// import UserWidget from "../widgets/UserWidget"
 
 const Navbar = () => {
   const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false);
@@ -30,13 +31,15 @@ const Navbar = () => {
   const background = theme.palette.background.default;
   const primaryLight = theme.palette.primary.light;
   const alt = theme.palette.background.alt;
-
+  
   const fullName = `${user.firstName} ${user.lastName}`;
 
   const [searchQuery, setSearchQuery] = useState("");
-  const handleHelpClick = () => {
+  const handleGymClick = () => {
     navigate("/home?query=gym");
   };
+ 
+
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     navigate(`?query=${searchQuery}`);
@@ -47,6 +50,7 @@ const Navbar = () => {
   const handlePlayerClick = () => {
     navigate("/home?query=player");
   };
+  
 
   return (
     <FlexBetween
@@ -152,7 +156,7 @@ const Navbar = () => {
               Coach
             </Typography>
           </IconButton>
-          <IconButton onClick={handleHelpClick}>
+          <IconButton onClick={handleGymClick}>
             <Typography
               variant="body1"
               color={theme.palette.mode === "dark" ? "primary" : "primary"}
@@ -272,7 +276,7 @@ const Navbar = () => {
             </IconButton>
             <IconButton
               onClick={() => {
-                handleHelpClick();
+                handleGymClick();
                 setIsMobileMenuToggled(false);
               }}
             >
@@ -289,25 +293,7 @@ const Navbar = () => {
                 Gym
               </Typography>
             </IconButton>
-            <IconButton
-              onClick={() => {
-                setIsMobileMenuToggled(false);
-                navigate("/profile");
-              }}
-            >
-              <Typography
-                variant="body1"
-                color={
-                  theme.palette.mode === "dark" ? "primary" : "primary"
-                }
-                sx={{
-                  fontWeight: "bold",
-                  fontSize: "16px",
-                }}
-              >
-                Profile
-              </Typography>
-            </IconButton>
+            
             <IconButton
               onClick={() => {
                 dispatch(setLogout());

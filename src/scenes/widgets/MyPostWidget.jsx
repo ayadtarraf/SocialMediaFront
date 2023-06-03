@@ -52,6 +52,7 @@ const MyPostWidget = ({ picturePath }) => {
     setImage(null);
     setPost("");
   };
+  
 
   return (
     <WidgetWrapper>
