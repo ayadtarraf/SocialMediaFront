@@ -20,7 +20,7 @@ import { useState } from "react";
 
 const Navbar = () => {
   const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false);
-  const [isSearchBarVisible, setIsSearchBarVisible] = useState(false);
+  // const [isSearchBarVisible, setIsSearchBarVisible] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
@@ -90,11 +90,11 @@ const Navbar = () => {
           </div>
         </Typography>
 
-        {!isNonMobileScreens && !isSearchBarVisible && (
+        {/* {!isNonMobileScreens && !isSearchBarVisible && (
           <IconButton  onClick={() => setIsSearchBarVisible(true)}>
             <Search />
           </IconButton>
-        )}
+        )} */}
 
         {isNonMobileScreens && (
           <FlexBetween
@@ -317,7 +317,7 @@ const Navbar = () => {
         </Box>
       )}
 
-      {isSearchBarVisible && (
+      {/* {isSearchBarVisible && (
         <form onSubmit={handleSearchSubmit}>
           <FlexBetween
             backgroundColor={neutralLight}
@@ -341,7 +341,7 @@ const Navbar = () => {
             </IconButton>
           </FlexBetween>
         </form>
-      )}
+      )} */}
     </FlexBetween>
   );
 };
