@@ -222,6 +222,7 @@ const Navbar = () => {
             justifyContent="center"
             alignItems="center"
             gap="3rem"
+            margin="-21px"
           >
             <IconButton
               onClick={() => {

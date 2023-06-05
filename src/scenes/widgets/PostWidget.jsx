@@ -139,7 +139,7 @@ const PostWidget = ({
           <ShareOutlined />
         </IconButton>
       </FlexBetween>
-      {isComments && (
+      {/* {isComments && (
         <Box mt="0.5rem">
           {comments.map((comment, i) => (
             <Box key={`${name}-${i}`}>
@@ -151,7 +151,7 @@ const PostWidget = ({
           ))}
           <Divider />
         </Box>
-      )}
+      )} */}
 
       {/* Delete Confirmation Dialog */}
       <Dialog open={deleteDialogOpen} onClose={() => setDeleteDialogOpen(false)}>
