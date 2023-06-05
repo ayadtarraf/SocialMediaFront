@@ -7,7 +7,7 @@ import {
   Send,
   DeleteOutlineOutlined,
 } from "@mui/icons-material";
-import { Box, Divider, IconButton, Input, Typography, useTheme } from "@mui/material";
+import { Box, Divider, IconButton, Input, Typography, useTheme, Dialog, DialogTitle, DialogContent, DialogActions, Button } from "@mui/material";
 import FlexBetween from "components/FlexBetween";
 import Friend from "components/Friend";
 import WidgetWrapper from "components/WidgetWrapper";
@@ -28,7 +28,8 @@ const PostWidget = ({
   onDeletePost,
 }) => {
   const [isComments, setIsComments] = useState(false);
-  // const [Comment, setComment] = useState("");
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false); // Track the open state of the delete confirmation dialog
   const dispatch = useDispatch();
   const token = useSelector((state) => state.token);
   const loggedInUserId = useSelector((state) => state.user._id);
@@ -52,50 +53,40 @@ const PostWidget = ({
       }
     );
     const updatedPost = await response.json();
-    // console.log("Updated Post:", updatedPost);
     dispatch(setPost({ post: updatedPost }));
 
-    // Call the searchPosts function passed as prop
     if (searchPosts) {
-      searchPosts(""); // You can provide a search query here if needed
+      searchPosts("");
     }
   };
 
-  const handleDelete = async () => {
-    const shouldDelete = window.confirm("Are you sure you want to delete this post?");
-    if (shouldDelete) {
-      const response = await fetch(`${process.env.REACT_APP_ENV}/posts/${postId}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      const data = await response.json();
-      // console.log("Deleted Post:", data);
-  
-      // Call the onDeletePost function passed as prop
-      if (onDeletePost) {
-        onDeletePost(postId);
-      }
+  const handleDelete = () => {
+    if (!confirmDelete) {
+      setConfirmDelete(true);
+      return;
     }
+    
+    // Open the delete confirmation dialog
+    setDeleteDialogOpen(true);
   };
 
-//   const postComment = async () => {
-//     const response = await fetch(`http://localhost:3001/posts/${postId}/commentPost`,
-//     {
-//       method: "POST",
-//       headers: {
-//         Authorization: `Bearer ${token}`,
-//         "Content-Type": "application/json",
-//       },
-//       body: JSON.stringify({ value: Comment}),
+  const confirmDeletePost = async () => {
+    const response = await fetch(`${process.env.REACT_APP_ENV}/posts/${postId}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const data = await response.json();
 
-//     });
-//   }
-//   const updatedPost = await response.json();
-//   dispatch(setPost({ post: updatedPost }));
-//   setComment("")
-// }:
+    if (onDeletePost) {
+      onDeletePost(postId);
+    }
+
+    // Close the delete confirmation dialog
+    setDeleteDialogOpen(false);
+  };
+
   return (
     <WidgetWrapper m="2rem 0">
       <Friend
@@ -132,30 +123,15 @@ const PostWidget = ({
           <IconButton onClick={() => setIsComments(!isComments)}>
             <ChatBubbleOutlineOutlined />
           </IconButton>
-          {/* <Typography>{comments && comments.length}</Typography>
-          <Input
-          value={Comment}
-          onChange={(e) => setComment(e.target.value)}
-          />
-          {Comment.length > 0 ? (
-            <Send
-            style={{marginTop: "10px"}}
-            fullWidth
-            disabled={!Comment.length}
-            color="primary"
-            variant="contained"
-            onClick={postComment}
-            >
-              Comment
-            </Send>
-          ) :(
-            ""
-          )} */}
         </FlexBetween>
 
         {loggedInUserId === postUserId && (
           <IconButton onClick={handleDelete}>
-            <DeleteOutlineOutlined />
+            {confirmDelete ? (
+              <Typography>Confirm deletion?</Typography>
+            ) : (
+              <DeleteOutlineOutlined />
+            )}
           </IconButton>
         )}
 
@@ -163,7 +139,7 @@ const PostWidget = ({
           <ShareOutlined />
         </IconButton>
       </FlexBetween>
-      {/* {isComments && (
+      {isComments && (
         <Box mt="0.5rem">
           {comments.map((comment, i) => (
             <Box key={`${name}-${i}`}>
@@ -175,7 +151,19 @@ const PostWidget = ({
           ))}
           <Divider />
         </Box>
-      )} */}
+      )}
+
+      {/* Delete Confirmation Dialog */}
+      <Dialog open={deleteDialogOpen} onClose={() => setDeleteDialogOpen(false)}>
+        <DialogTitle>Confirm Deletion</DialogTitle>
+        <DialogContent>
+          <Typography>Are you sure you want to delete this post?</Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setDeleteDialogOpen(false)}>Cancel</Button>
+          <Button onClick={confirmDeletePost} color="error" variant="contained">Delete</Button>
+        </DialogActions>
+      </Dialog>
     </WidgetWrapper>
   );
 };
